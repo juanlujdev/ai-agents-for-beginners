@@ -1,0 +1,226 @@
+{
+  "main": {
+    "id": "74d509ff5e2ba9b7",
+    "type": "split",
+    "children": [
+      {
+        "id": "51afc85ed755d54a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "684e4097f05242c5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "wiki/concepts/metacognicion.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "metacognicion"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ee0feb1c6c3adc3f",
+    "type": "split",
+    "children": [
+      {
+        "id": "70a6d135d95b54b0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9fcc618beb962e5b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "4e49ff2e26e6de03",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "b4b78e5b70b6f6be",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "2a9add7f7e8a344e",
+    "type": "split",
+    "children": [
+      {
+        "id": "73c83d356f91f231",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "25e13a20ad355114",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "08-multi-agent/code_samples/workflows-agent-framework/README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes de README"
+            }
+          },
+          {
+            "id": "2fc32c2a19c22de8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "08-multi-agent/code_samples/workflows-agent-framework/README.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes de README"
+            }
+          },
+          {
+            "id": "cddbd69cb004c398",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "49d293f57549cbe2",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "c7da068f279f54fc",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "08-multi-agent/code_samples/workflows-agent-framework/README.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema de README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "684e4097f05242c5",
+  "lastOpenFiles": [
+    "wiki/sources/02-explore-agentic-frameworks.md",
+    "wiki/sources/03-agentic-design-patterns.md",
+    "wiki/concepts/autenticacion-azure-sin-claves.md",
+    "AGENTS.md",
+    "08-multi-agent/code_samples/workflows-agent-framework/README.md",
+    "translations/cs/08-multi-agent/code_samples/workflows-agent-framework/dotNET/04.dotnet-agent-framework-workflow-aifoundry-condition.md",
+    "wiki/sources/13-agent-memory.md",
+    "wiki/sources/13-agent-memory.md.tmp.15948.322f84242b86",
+    "wiki/sources/12-context-engineering.md",
+    "wiki/sources/12-context-engineering.md.tmp.15948.a5fceb485036",
+    "wiki/sources/11-agentic-protocols.md",
+    "wiki/synthesis/fix-reasoning-item-workflow.md",
+    "wiki/synthesis/fix-imagenes-en-foundry.md",
+    "wiki/synthesis/fix-imagenes-en-foundry.md.tmp.15948.3416149b94dc",
+    "wiki/sources/10-ai-agents-production.md",
+    "wiki/sources/09-metacognition.md",
+    "wiki/sources/09-metacognition.md.tmp.15948.db6f50e1acb1",
+    "wiki/synthesis/fix-notebook-04-sdk-desactualizado.md",
+    "wiki/synthesis/fix-notebook-04-sdk-desactualizado.md.tmp.15948.0a422bf162de",
+    "wiki/sources/08-multi-agent.md",
+    "wiki/synthesis/fix-git-push-divergente.md",
+    "wiki/synthesis/fix-az-login-cache-msal.md",
+    "wiki/synthesis/fix-pip-notebook-colgado.md",
+    "wiki/synthesis/fix-pip-notebook-colgado.md.tmp.15948.f8a1d959d53b",
+    "wiki/synthesis/fix-modelos-deprecados-azure.md",
+    "wiki/synthesis/fix-modelos-deprecados-azure.md.tmp.15948.ae68f6a21c51",
+    "wiki/synthesis/claude-vs-openai-en-foundry.md",
+    "wiki/sources/03-agentic-design-patterns.md.tmp.15948.853776d895fc",
+    "wiki/sources/00-course-setup.md",
+    "CLAUDE.md",
+    "CLAUDE.md.tmp.15948.666f946b5378",
+    "raw",
+    "wiki/overview.md",
+    "wiki/log.md",
+    "wiki/index.md"
+  ]
+}
