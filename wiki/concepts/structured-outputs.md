@@ -1,6 +1,6 @@
 ---
 type: concept
-date_updated: 2026-08-01
+date_updated: 2026-08-02
 source_count: 5
 ---
 
@@ -18,6 +18,25 @@ Esta es la distinción central:
 | `response_format=ModeloPydantic` | El modelo Pydantic se convierte en JSON Schema y viaja como **restricción dura** (`text_format`/`json_schema` en la request) | El servidor impone el esquema |
 
 Los errores de `14-concurrent.ipynb` venían justo de confundir ambas → [[fix-workflow-concurrente]].
+
+**No es mala suerte, es lo esperable.** Ya son tres notebooks del curso con el mismo fallo (`04`, `14-concurrent`, `14-sequential`): todos escriben *"Return structured JSON matching the X schema"* en `instructions` y ninguno pasa `response_format`. La afirmación fuerte que se puede hacer a estas alturas: **si un notebook de este curso pide JSON solo por prompt, va a fallar tarde o temprano.** Vale la pena revisarlo antes de ejecutar.
+
+Firma del error, para reconocerlo de un golpe:
+
+```
+N validation errors for MiModelo
+mi_campo   Field required   input_value={'campo_inventado': ...}
+```
+
+El modelo **acierta el contenido y se inventa los rótulos** (`name` en vez de `attraction_name`). Lógico: nunca ve la clase Python, solo lee su nombre como texto suelto y deduce los campos.
+
+## El prompt y el esquema tienen que estar de acuerdo
+
+Son dos caras del mismo contrato. Cuando dicen cosas distintas, algo se rompe — y el error aparece lejos de la causa.
+
+Caso real en `14-sequential.ipynb`: `AttractionRecommendation` tiene un solo `attraction_name: str`, así que el prompt **necesita** la palabra *single* (*"provide a single recommendation"*). Sin ella el modelo devuelve cinco opciones por instinto y no hay dónde meterlas. El fallo simétrico —ampliar el esquema a una lista y olvidar el prompt— es igual de típico.
+
+Corolario: al tocar un esquema Pydantic, releer el prompt del agente que lo rellena.
 
 ## Cómo se pasa, según el sitio
 

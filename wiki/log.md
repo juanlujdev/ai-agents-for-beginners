@@ -38,3 +38,33 @@ Alcance: conceptos de AI agents + referencia de código del repo.
 
 Comprobados los 33 ficheros: todos los enlaces wiki resuelven y todas las páginas tienen al menos un enlace entrante (salvo `overview.md`, que es la entrada por diseño y ahora se enlaza desde `index.md`).
 6 pendientes registrados en el índice, entre ellos la confusión de entornos Python (`.venv` vs `Python311`/`Python312` globales) y el `SyntaxError` de `14-handoff.ipynb`, cuyo estado en el archivo está sin confirmar.
+
+## [2026-08-02] ingest | 14-sequential.ipynb (explicación celda a celda + fix de structured outputs)
+
+**Fuente**: `14-microsoft-agent-framework/code-samples/14-sequential.ipynb`, recorrido celda a celda en sesión didáctica (`78c7fe19`), más su ejecución real contra Foundry.
+
+El único de los cinco notebooks de la lección 14 que no tenía sección propia en la wiki.
+
+**Fix aplicado al notebook** (queda en el repo, no solo en la wiki): los dos agentes pasan ahora `default_options={"response_format": ...}` y se elimina de `instructions` la petición redundante `"Return structured JSON matching the X schema"`. Sin ello, el modelo devolvía `{'name': 'Vasa Museum'...}` y Pydantic daba `4 validation errors ... Field required`.
+
+**Tercera aparición del mismo bug** (`04`, `14-concurrent`, `14-sequential`). Se pasó de "pasó dos veces" a una afirmación general en [[structured-outputs]]: *si un notebook de este curso pide JSON solo por prompt, va a fallar*. Añadida al índice como pendiente el inventario de notebooks aún sin `response_format`.
+
+**Conocimiento nuevo propagado**:
+- [[structured-outputs]] — firma reconocible del error (acierta el contenido, se inventa los rótulos) y sección nueva **"el prompt y el esquema tienen que estar de acuerdo"**: `AttractionRecommendation` tiene un solo `attraction_name`, luego el prompt necesita la palabra *single*. Corolario: al tocar un esquema, releer el prompt.
+- [[workflows-como-grafo]] — tabla de las cuatro decisiones de `WorkflowBuilder`; sección del patrón secuencial; y el matiz de que la fragilidad de leer `outputs[i]` por posición está **dormida** en secuencial (el orden de llegada coincide con el declarado), no ausente.
+- [[llm-as-judge]] — tercer rol del patrón en el curso: juez como **nodo de un workflow**. Argumento nuevo de por qué el juez debe ser otro agente aunque comparta modelo (sin conflicto de intereses + una instrucción corta se cumple mejor). Y la advertencia de que un juez sin tools no verifica nada: `visitor_rating: 4.6` es estimación con aspecto de dato.
+
+**Debilidades del notebook documentadas** sin corregir: `output_executors` deprecado, `analyze_sequential_flow()` re-ejecuta el workflow en vez de leer `events` (dos llamadas de más), resumen final escrito a mano en el HTML, `# 1-10 scale` como comentario en vez de `Field(ge=1, le=10)`, numeración de pasos que salta del 4 al 8, cinco imports huérfanos.
+
+## [2026-08-02] ingest | Verificación del fix de 14-sequential.ipynb
+
+El fix de `response_format` de la entrada anterior queda **verificado end-to-end** contra Foundry real. Notebook completo re-ejecutado, cero salidas de tipo `error`:
+
+```
+Stockholm: front-desk -> Vasa Museum (Vasamuseet) | concierge -> 9/10, 4.5/5.0
+Barcelona: user -> front-desk (JSON) -> concierge (JSON) | Total Steps: 3
+```
+
+Los campos llegan con **el nombre exacto del esquema** (`attraction_name`, antes `name`) y el JSON del recepcionista viaja sin envolver. Confirma que la restricción dura actúa, y no que el modelo obedeciera el prompt por casualidad.
+
+Retirado el aviso "sin verificar" de [[14-microsoft-agent-framework]]. El pendiente del inventario de notebooks sin `response_format` sigue abierto.

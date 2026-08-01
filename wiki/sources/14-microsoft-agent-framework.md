@@ -1,9 +1,9 @@
 ---
 type: source-summary
-date_updated: 2026-08-01
+date_updated: 2026-08-02
 leccion: 14-microsoft-agent-framework
-sesiones: [5f237daa, 771cdf26, e8c216f7, 1a4c626f, dd752e87, ea1ac533, 62cab66d, 7d9a8e0d]
-fechas_origen: 2026-07-28 .. 2026-07-31
+sesiones: [5f237daa, 771cdf26, e8c216f7, 1a4c626f, dd752e87, ea1ac533, 62cab66d, 7d9a8e0d, 78c7fe19]
+fechas_origen: 2026-07-28 .. 2026-08-02
 ---
 
 # 14 — Microsoft Agent Framework
@@ -30,6 +30,77 @@ agent = AzureOpenAIChatClient(credential=AzureCliCredential()).create_agent(
 **Orquestación**: secuencial · concurrente · group chat · handoff · magnetic (un manager crea la lista de tareas y coordina subagentes).
 
 **Tipos de edge en workflows**: direct · conditional · switch-case · fan-out · fan-in → [[workflows-como-grafo]].
+
+## `14-sequential.ipynb` — producir y luego juzgar
+
+El más simple de los cinco y el mejor para entender qué es un agente. Dos agentes en fila: `front-desk-agent` recomienda **una** atracción de una ciudad, `concierge-agent` la revisa y la puntúa.
+
+```python
+workflow = (WorkflowBuilder(start_executor=front_desk_agent,
+                            output_executors=[front_desk_agent, concierge_agent])
+    .add_edge(front_desk_agent, concierge_agent)
+    .build())
+
+events  = await workflow.run(f"I want to visit an attraction in {city}")
+outputs = events.get_outputs()       # [respuesta_recepción, respuesta_conserje]
+```
+
+Las cuatro decisiones del `WorkflowBuilder`, que es lo que conviene memorizar: `start_executor` (quién recibe la entrada humana) · `add_edge` (quién pasa el trabajo a quién) · `output_executors` (qué salidas se conservan) · `.build()` (cerrar y validar el plano).
+
+**Los dos agentes comparten el mismo `provider`, el mismo modelo y la misma factura.** Lo único que los diferencia es el `instructions`. Es el ejemplo más limpio de *agente = modelo + instrucciones*: el prompt no es decoración, es la personalidad y el criterio del trabajador.
+
+Tres frases de los prompts hacen todo el trabajo:
+
+- **`"provide a single, well-researched recommendation"`** — sin *single*, el modelo devuelve cinco opciones por instinto, y `AttractionRecommendation` solo tiene sitio para un `attraction_name`. **Prompt y esquema tienen que estar de acuerdo** → [[structured-outputs]].
+- **`"You will receive an attraction recommendation"`** — la bisagra del patrón secuencial: avisa al conserje de que su entrada viene de **otro agente**, no de un humano. Sin ella recibe un bloque de JSON y se extraña.
+- Al conserje **nunca** se le pide ser amable con la propuesta de recepción. Hereda el dato pero no el orgullo → [[llm-as-judge]].
+
+Ninguno tiene tools ni memoria. Consecuencia: cuando el conserje devuelve `visitor_rating: 4.6` **no ha consultado nada** — es una estimación de su entrenamiento con aspecto de dato de TripAdvisor. El ejemplo enseña orquestación, no obtención de datos verídicos.
+
+### El bug: tercera aparición del mismo fallo
+
+Ejecutado contra Foundry real (2026-08-02), falla con:
+
+```
+4 validation errors for AttractionRecommendation
+attraction_name  Field required   input_value={'name': 'Vasa Museum (Va...
+description / category / why_recommended   Field required
+```
+
+El modelo **acertó la atracción** (Museo Vasa) y **se inventó los rótulos** de las casillas: `name` en vez de `attraction_name`. Causa: las instrucciones solo *pedían* `"Return structured JSON matching the AttractionRecommendation schema"`. El modelo nunca ve la clase Python — solo lee ese nombre como texto y adivina los campos.
+
+Mismo Bug 2 que [[fix-workflow-concurrente]]. Fix aplicado:
+
+```python
+front_desk_agent = provider.as_agent(
+    name="front-desk-agent",
+    instructions="...",                                              # sin la petición de JSON, ya redundante
+    default_options={"response_format": AttractionRecommendation},   # restricción dura
+)
+```
+
+**Verificado end-to-end** contra Foundry real (2026-08-02), notebook completo sin una sola salida de tipo `error`:
+
+```
+celda 10 (Stockholm):  Front Desk -> Vasa Museum (Vasamuseet) | category "Maritime museum / History"
+                       Concierge  -> popularity 9/10, visitor_rating 4.5/5.0
+celda 12 (Barcelona):  Step 1 user -> Step 2 front-desk (JSON) -> Step 3 concierge (JSON)
+                       Total Steps: 3
+```
+
+Dos detalles que confirman el diagnóstico: los campos ahora llegan con **el nombre exacto del esquema** (`"attraction_name":"Sagrada Família..."`, antes `name`), y la salida del recepcionista que se ve en el Step 2 es **JSON estricto sin envolver** — la restricción dura funcionando, no una sugerencia obedecida por casualidad.
+
+Al re-ejecutar hay que acordarse de la trampa del kernel cacheado: la celda de los agentes **y** la del `workflow`, porque el flujo guarda referencias a los agentes viejos.
+
+### Detalles honestos del notebook
+
+- **`output_executors` está deprecado** en la versión instalada: `DeprecationWarning: use output_from instead`. Funciona, solo avisa.
+- **Las salidas se leen por posición** (`outputs[0]`, `outputs[1]`). Es la fragilidad de [[fix-workflow-concurrente]] Bug 1, pero **dormida**: al ser secuencial, el orden de llegada coincide con el declarado. Rompería al convertir el flujo en concurrente.
+- La numeración de los pasos salta del 4 al 8 — restos de una versión más larga recortada sin renumerar.
+- `analyze_sequential_flow()` **no analiza** la ejecución anterior: **re-ejecuta el workflow completo** con otra ciudad (Barcelona) y reconstruye a mano una narración de tres pasos. Cuesta dos llamadas más. Un análisis real usaría el contenido de `events`, que ya trae la crónica interna sin volver a pagar.
+- El resumen final ("Agents Involved: 2", "Flow Pattern: Linear sequential") está **escrito a mano en el HTML**; solo `len(steps)` se calcula. Miente en cuanto se añada un tercer agente.
+- `# 1-10 scale` junto a `popularity_score: int` es un comentario, no una validación. Un 47 pasa el `model_validate_json` y rompe la barra de emojis (`"🟩" * 47`). Se arreglaría con `Field(ge=1, le=10)`.
+- Imports huérfanos: `asyncio`, `json`, `Any`, `cast`, `Message` no se usan.
 
 ## `14-concurrent.ipynb` — fan-out con tres especialistas
 
