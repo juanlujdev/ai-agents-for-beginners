@@ -1,12 +1,45 @@
 ---
 type: log
-date_updated: 2026-08-01
+date_updated: 2026-08-07
 ---
 
 # Log
 
 Append-only. Formato de cabecera fijo para poder filtrar:
 `grep "^## \[" wiki/log.md | tail -5`
+
+## [2026-08-07] ingest | Fix: 15-browser-user.ipynb en Windows (Chrome, .env, event loop)
+
+**Fuente**: sesión de depuración real en esta conversación, ejecutando `15-browser-user.ipynb` en Windows tras el recorrido didáctico. Sin fuente escrita propia — se ingiere el resumen de la conversación (caso "ingesta sin fuente escrita").
+
+Tres fallos encadenados, cada uno reproducido de forma aislada y con el fix verificado antes de tocar el notebook:
+1. `start_chrome_with_cdp` no encontraba Chrome en Windows (lista de rutas Mac/Linux/PATH) → se cambió a `p.chromium.executable_path` de Playwright.
+2. `.env` con `AZURE_OPENAI_DEPLOYMENT` pero no `AZURE_OPENAI_CHAT_DEPLOYMENT_NAME`, y sin `AZURE_OPENAI_API_KEY` → añadidas las 3 variables que lee `browser_use.ChatAzureOpenAI`, sin tocar la variable que usan otras 35 referencias del curso.
+3. `NotImplementedError` al arrancar Playwright, por `ipykernel` forzando `WindowsSelectorEventLoopPolicy` (incompatible con subprocesos) → `main()` se ejecuta en un hilo aparte con `WindowsProactorEventLoopPolicy` propia, solo en Windows.
+
+**Páginas creadas** (1): `synthesis/fix-browser-use-windows-jupyter.md`
+**Páginas actualizadas** (2): `sources/15-browser-use.md` (nueva sección con enlace), `index.md` (síntesis + 2 pendientes nuevos)
+
+## [2026-08-07] ingest | 15-browser-use (README + notebook, computer use agents)
+
+**Fuente**: `15-browser-use/README.md` y `15-browser-use/15-browser-user.ipynb`, recorrido completo en sesión didáctica (explicación celda a celda + arquitectura), con el log de una ejecución real del notebook contra Airbnb.
+
+Primera lección del curso sobre **computer use agents**: el agente actúa sobre una interfaz visual (navegador) en vez de una API. Introduce dos entidades nuevas ([[browser-use]] como framework, Playwright/CDP como capa de control) y el patrón conceptual central de la lección: **Agente vs Actor**, con su combinación híbrida (Agente para navegación abierta, control directo para extracción estructurada).
+
+**Páginas creadas** (3):
+- `sources/15-browser-use.md`
+- `entities/browser-use.md`
+- `concepts/computer-use-agents.md`
+
+**Páginas actualizadas** (2):
+- [[structured-outputs]] — nueva sección: el mismo contrato (esquema forzado vs. sugerencia en prompt) aplicado a **visión** en vez de texto, vía `page.extract_content(structured_output=..., ...)`. `source_count` 5→6.
+- [[metacognicion]] — nueva referencia de producción: Project Opal planifica y se autosupervisa, mismo principio que la metacognición del curso pero a escala empresarial. `source_count` 2→3.
+
+**Hallazgos nuevos, sin fix aplicado** (quedan en Pendientes):
+- Bug real en la ejecución: `take_screenshot()` falla (`a bytes-like object is required, not 'str'`) porque las dos versiones de `AirbnbSearchAgent` en el mismo notebook asumen tipos de retorno distintos para `page.screenshot()` de Browser-Use, según si la conexión es vía `playwright_browser` o `cdp_url`.
+- `langchain-openai` se instala pero no se usa (el notebook cambió a `ChatAzureOpenAI` de `browser_use`, con comentario explícito en el código, sin limpiar el `pip install`).
+
+**Conocimiento propagado**: Project Opal (referencia de Microsoft citada en el README) conecta esta lección con conceptos ya vistos — human-in-the-loop, agentes seguros, [[metacognicion|metacognición]], [[tool-calling|tools reutilizables]] — pero de lecciones (04, 06, 07, 18) que siguen sin ingerir. Los enlaces quedan marcados como pendientes en vez de inventar contenido para esas lecciones.
 
 ## [2026-08-07] ingest | Fix de imports desactualizados en hotel_booking_workflow_sample.py
 

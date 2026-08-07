@@ -24,8 +24,9 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[12-context-engineering]] | 12 | Los 4 fallos de contexto, scratchpad, compresión |
 | [[13-agent-memory]] | 13 | 7 tipos de memoria, knowledge agent, Cognee vs MAF |
 | [[14-microsoft-agent-framework]] | 14 | Sequential, concurrent, conditional, handoff, middleware, LangGraph hospedado |
+| [[15-browser-use]] | 15 | Computer use agents: Browser-Use + Playwright/CDP, Agente vs Actor, extracción con visión |
 
-**Sin ingerir todavía**: lecciones 01, 04, 05, 06, 07, 15 y 18 — no aparecen en el historial de conversaciones o solo de pasada.
+**Sin ingerir todavía**: lecciones 01, 04, 05, 06, 07 y 18 — no aparecen en el historial de conversaciones o solo de pasada.
 
 ## Entidades
 
@@ -37,18 +38,20 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[a2a]] | Protocolo agente ↔ agente |
 | [[nlweb]] | Protocolo agente/humano ↔ sitio web |
 | [[cognee]] | Grafo de conocimiento como memoria de largo plazo |
+| [[browser-use]] | Framework de automatización de navegador dirigida por IA sobre Playwright |
 
 ## Conceptos
 
 | Página | Idea |
 | --- | --- |
 | [[tool-calling]] | El LLM decide *cuándo* llamar; lee docstring y `Annotated`, no el código |
-| [[structured-outputs]] | Pedir JSON por prompt ≠ forzarlo con `response_format` |
+| [[structured-outputs]] | Pedir JSON por prompt ≠ forzarlo con `response_format` (también desde visión) |
 | [[workflows-como-grafo]] | Nodos, edges, y por qué en fan-out los agentes no se hablan |
 | [[metacognicion]] | Cambiar la estrategia, no el resultado |
 | [[context-engineering]] | La información correcta, no más información |
 | [[llm-as-judge]] | Un agente puntuando a otro: usos y límites |
 | [[autenticacion-azure-sin-claves]] | `az login` en vez de claves; caducidad y token providers |
+| [[computer-use-agents]] | Agente que actúa sobre una interfaz visual; Agente vs Actor; patrón híbrido |
 
 ## Síntesis
 
@@ -66,12 +69,13 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | [[fix-az-login-cache-msal]] | `az account clear` cuando el login entra en bucle |
 | [[fix-git-push-divergente]] | Rebase tras sincronizar con el upstream del fork |
 | [[fix-hotel-booking-sample-imports]] | `ChatMessage`/`ai_function`/`Role.USER` rotos en un script `.py` de la 14, no solo en notebooks |
+| [[fix-browser-use-windows-jupyter]] | Chrome no encontrado, `.env` mal nombrado, y `NotImplementedError` de asyncio en Jupyter/Windows |
 
 ## Pendientes
 
 | Pendiente | Tipo | Detectado |
 | --- | --- | --- |
-| Lecciones 01, 04, 05, 06, 07, 15, 18 sin página de fuente | hueco | 2026-08-01 |
+| Lecciones 01, 04, 05, 06, 07, 18 sin página de fuente | hueco | 2026-08-01 |
 | `fix-reasoning-item-workflow` no está verificado en el notebook de la lección 10, solo en el de la 14 | verificación | 2026-08-01 |
 | Confusión de entornos: paquetes instalados en `.venv`, `Python311` y `Python312` globales; el kernel de VS Code puede apuntar a cualquiera | entorno | 2026-08-01 |
 | Bug del `SyntaxError` en `14-handoff.ipynb` (`> ` sin valor): no consta si llegó a corregirse en el archivo | seguimiento | 2026-08-01 |
@@ -80,3 +84,8 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | `output_executors` deprecado en favor de `output_from`: sin comprobar si la semántica es idéntica ni si afecta a los otros notebooks de la 14 | API | 2026-08-02 |
 | Los notebooks que aún piden JSON solo por prompt (sin `response_format`) no están inventariados; ya han fallado tres | seguimiento | 2026-08-02 |
 | Los demás scripts `.py` de `code-samples/` (fuera de notebooks) no se han auditado contra el SDK instalado; `hotel_booking_workflow_sample.py` tenía 3 imports rotos sin que nadie lo hubiera ejecutado | seguimiento | 2026-08-07 |
+| `take_screenshot()` en `15-browser-user.ipynb` falla (`a bytes-like object is required, not 'str'`) por inconsistencia entre las dos implementaciones de `AirbnbSearchAgent` sobre qué devuelve `page.screenshot()` de Browser-Use (`playwright_browser` vs `cdp_url`) — sin corregir | bug sin fix | 2026-08-07 |
+| `langchain-openai` se instala en `15-browser-user.ipynb` pero no se usa (`ChatAzureOpenAI` viene de `browser_use`) — dependencia muerta | limpieza | 2026-08-07 |
+| Project Opal cita las lecciones 04, 06, 07 y 18 como referencia (tools reutilizables, human-in-the-loop, planificación, agentes seguros); esas lecciones siguen sin página propia, así que la comparación en [[computer-use-agents]] queda con enlaces pendientes | hueco | 2026-08-07 |
+| `.env` del repo tiene ahora `AZURE_OPENAI_DEPLOYMENT` y `AZURE_OPENAI_CHAT_DEPLOYMENT_NAME` con el mismo valor duplicado, por las dos convenciones de nombre que conviven (Entra ID vs `browser_use.ChatAzureOpenAI`) — ver [[fix-browser-use-windows-jupyter]]; sin limpiar | limpieza | 2026-08-07 |
+| El fix de `NotImplementedError` en [[fix-browser-use-windows-jupyter]] es específico de `ipykernel` 7.3.0 en Windows; no comprobado si sigue haciendo falta en versiones más nuevas de `ipykernel` que puedan dejar de forzar `WindowsSelectorEventLoopPolicy` | verificación | 2026-08-07 |

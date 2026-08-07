@@ -1,14 +1,14 @@
 ---
 type: overview
-date_updated: 2026-08-01
-source_count: 10
+date_updated: 2026-08-07
+source_count: 11
 ---
 
 # Overview
 
 Wiki del curso *AI Agents for Beginners* (Microsoft), construida sobre las lecciones del repo y el historial de trabajo con ellas.
 
-**Estado**: 10 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria y Microsoft Agent Framework. Ver [[index]] para el catálogo y [[log]] para la cronología.
+**Estado**: 11 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework y computer use agents (navegador). Ver [[index]] para el catálogo y [[log]] para la cronología.
 
 ## Tesis actual
 
@@ -29,5 +29,6 @@ El curso avanza de "un agente con tools" a "varios agentes coordinados en produc
 - [[context-engineering]] gestiona qué entra en la ventana **dentro** de una sesión; la memoria ([[cognee]], Mem0) es lo que persiste **entre** sesiones.
 - [[metacognicion]] y [[llm-as-judge]] son las capas de auto-observación.
 - [[mcp]], [[a2a]] y [[nlweb]] son la interoperabilidad hacia fuera.
+- [[computer-use-agents]] es la variante donde el agente actúa sobre una interfaz visual (navegador) en vez de una API — mismo principio de [[structured-outputs]], aplicado a lo que el modelo "ve" en pantalla.
 
-Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]].
+Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]], salvo la lección 15 ([[browser-use]]), que añade Playwright/CDP como capa de control del navegador.

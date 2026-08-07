@@ -1,7 +1,7 @@
 ---
 type: concept
-date_updated: 2026-08-01
-source_count: 2
+date_updated: 2026-08-07
+source_count: 3
 ---
 
 # Metacognición
@@ -38,4 +38,8 @@ DECIDIR ──▶ REGISTRAR ──▶ REFLEXIONAR
 
 El `HotelRecommendationAgent` de [[09-metacognition]] solo alterna entre dos estrategias fijas y **solo mira la última decisión** (`previous_choices[-1]`). Un agente metacognitivo robusto miraría patrones en todo el historial ("cheapest falla el 80% de las veces"), no reaccionaría a un solo dato.
 
-Fuentes: [[09-metacognition]]
+## Referencia de producción
+
+Project Opal (citado en [[15-browser-use]] / [[computer-use-agents]]) genera un plan antes de actuar y se autosupervisa paso a paso, deteniéndose si detecta actividad sospechosa — la misma idea de observar la propia estrategia, no solo el resultado, aplicada a un [[computer-use-agents|CUA]] de producción.
+
+Fuentes: [[09-metacognition]], [[15-browser-use]]

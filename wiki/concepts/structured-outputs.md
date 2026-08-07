@@ -1,7 +1,7 @@
 ---
 type: concept
-date_updated: 2026-08-02
-source_count: 5
+date_updated: 2026-08-07
+source_count: 6
 ---
 
 # Structured outputs
@@ -69,4 +69,8 @@ priority_override: bool = False  # ❌ no válido en structured outputs
 
 Convierte la salida del LLM en un dato con el que se puede programar. En los workflows es lo que permite que una función de condición decida la ruta (`result.has_availability`) o que un executor traduzca texto crudo a un objeto tipado antes de pasarlo al siguiente nodo → [[workflows-como-grafo]].
 
-Fuentes: [[03-agentic-design-patterns]], [[14-microsoft-agent-framework]], [[08-multi-agent]]
+## No solo desde texto: extracción estructurada desde visión
+
+Todo lo anterior asume que la fuente es un prompt de texto. En [[15-browser-use]], [[browser-use]] aplica el mismo principio a una **captura de pantalla**: `page.extract_content(prompt=..., structured_output=MiEsquema, llm=llm)` con `use_vision=True` fuerza al modelo a leer lo que "ve" en la página y devolverlo como objeto Pydantic, no como descripción en prosa. El contrato es idéntico (esquema validado vs. sugerencia en el prompt); lo que cambia es el canal de entrada. Ver la comparación completa en [[computer-use-agents]].
+
+Fuentes: [[03-agentic-design-patterns]], [[14-microsoft-agent-framework]], [[08-multi-agent]], [[15-browser-use]]
