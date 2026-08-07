@@ -1,7 +1,7 @@
 ---
 type: entity
 date_updated: 2026-08-07
-source_count: 8
+source_count: 9
 ---
 
 # Microsoft Agent Framework (MAF)
@@ -39,10 +39,16 @@ Todas verificadas contra el paquete real, no contra documentación:
 
 Varios notebooks **y scripts standalone** del curso están escritos contra una API anterior (`Hosted*Tool`, `AzureAIAgentClient`, `ChatMessage`, `ai_function`) y no ejecutan sin arreglos. No es solo un problema de notebooks: `hotel_booking_workflow_sample.py` es un `.py` normal y tenía el mismo trío de síntomas (`ChatMessage`, `ai_function`, `Role.USER`) → [[fix-hotel-booking-sample-imports]].
 
+## En producción ([[16-deploying-scalable-agents]])
+
+- `WorkflowBuilder` es también el mecanismo del patrón de despliegue **Agent Workflow** → [[patrones-de-despliegue]]: los mismos nodos y edges de [[workflows-como-grafo]], con un `Human Approval Node` que pausa el grafo para una acción de negocio (reembolso, borrado) en vez de para un dato que falta.
+- `agent_framework.observability` se usa en producción con **atributos de span** de negocio (`customer.tier`, `routed.model`), no solo para medir latencia: es lo que convierte una traza en pregunta respondible.
+- `@tool(approval_mode=...)` es el primitivo que implementa el gate de aprobación humana en el laboratorio de la lección 16 (reembolsos por encima de un umbral).
+
 ## Relación con otras piezas
 
 MAF es el **cerebro conversacional** que orquesta. No es un almacén de conocimiento: [[cognee]] o Mem0 cubren la memoria de largo plazo, y MAF los consulta como una tool más → [[13-agent-memory]].
 
 Interopera con [[mcp]] (herramientas externas) y A2A (agentes remotos), y puede alojar agentes de LangChain/LangGraph en [[azure-ai-foundry]].
 
-Fuentes: [[14-microsoft-agent-framework]], [[08-multi-agent]], [[10-ai-agents-production]], [[02-explore-agentic-frameworks]]
+Fuentes: [[14-microsoft-agent-framework]], [[08-multi-agent]], [[10-ai-agents-production]], [[02-explore-agentic-frameworks]], [[16-deploying-scalable-agents]]

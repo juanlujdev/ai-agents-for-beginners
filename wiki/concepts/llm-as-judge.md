@@ -1,7 +1,7 @@
 ---
 type: concept
-date_updated: 2026-08-02
-source_count: 3
+date_updated: 2026-08-07
+source_count: 4
 ---
 
 # LLM-as-judge
@@ -50,4 +50,8 @@ Es un LLM juzgando a otro LLM: hereda sus sesgos y no es determinista. Sirve com
 
 Para evaluación seria, la pieza que falta aquí es el **dataset offline** con respuestas conocidas, ejecutado en CI/CD → [[10-ai-agents-production]].
 
-Fuentes: [[10-ai-agents-production]], [[09-metacognition]], [[14-microsoft-agent-framework]]
+## Cuarto rol: compuerta de release
+
+En [[16-deploying-scalable-agents]] el patrón se vuelve una decisión de CI/CD, no solo una métrica que se observa: `score_response(...)` puntúa cada caso de un set offline y una `evaluation_gate()` **bloquea el despliegue** si la tasa de aciertos no supera un umbral (`0.8` en el ejemplo del curso). Es el mismo loop offline/online de [[10-ai-agents-production]] hecho explícito y automático — nadie despliega a mano "porque parece que funciona".
+
+Fuentes: [[10-ai-agents-production]], [[09-metacognition]], [[14-microsoft-agent-framework]], [[16-deploying-scalable-agents]]

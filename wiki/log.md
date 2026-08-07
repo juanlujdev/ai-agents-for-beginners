@@ -8,6 +8,33 @@ date_updated: 2026-08-07
 Append-only. Formato de cabecera fijo para poder filtrar:
 `grep "^## \[" wiki/log.md | tail -5`
 
+## [2026-08-07] ingest | 16-python-agent-framework.ipynb (recorrido celda a celda + fix de RAG)
+
+**Fuente**: `16-deploying-scalable-agents/code_samples/16-python-agent-framework.ipynb`, recorrido celda a celda en sesión didáctica (20 celdas, explicación en castellano de cada bloque de código y cada prompt) y ejecución real contra Foundry. Sin fuente escrita propia previa a esta sesión — el notebook ya estaba citado desde el README pero no se había abierto ni ejecutado (pendiente registrado el mismo día en la ingesta anterior).
+
+Confirma en código real las ocho piezas descritas en el README: `@tool(approval_mode=...)` (`never_require` vs `always_require` en `issue_refund`), `search_policies` con conmutador `USE_AZURE_SEARCH`, `memory_context()` inyectada como prefijo de prompt, `is_simple()` + `agent_for()` con caché de agentes por modelo, `response_cache` con `normalize()`, `evaluation_gate()` (umbral 80% global / 50% por pregunta — dos umbrales distintos, no uno solo) y `_NoopTracer` como patrón Null Object cuando el paquete de observabilidad no está instalado.
+
+**Bug real encontrado y corregido**: la compuerta de evaluación dio 75% (bloqueó el "deploy") porque `search_policies` fallaba con `ServiceResponseError('URL has an invalid label.')`. Causa: `.env` trae `AZURE_SEARCH_SERVICE_ENDPOINT="https://..."` y `AZURE_SEARCH_API_KEY="..."` como placeholders de la lección 05 (sin ingerir); `bool("https://...")` es `True`, así que `USE_AZURE_SEARCH` activa el buscador real de Azure contra un host inválido en vez de caer al fallback en memoria. Fix aplicado: vaciar solo `AZURE_SEARCH_SERVICE_ENDPOINT` en `.env` (el `and` corta en el primer falsy, así que basta una de las dos variables); `AZURE_SEARCH_API_KEY` se dejó con el placeholder, inofensivo mientras el endpoint siga vacío. Detalle completo en [[fix-azure-search-placeholder-url]].
+
+**Páginas creadas** (1): `synthesis/fix-azure-search-placeholder-url.md`
+**Páginas actualizadas** (4): `sources/16-deploying-scalable-agents.md` (frontmatter `fuente` + sección Laboratorio con resultado de ejecución real), `overview.md` (tesis 1 extendida al caso `.env`), `index.md` (fila de fuente + fila de síntesis + pendiente resuelto/reemplazado por 2 pendientes más precisos)
+
+## [2026-08-07] ingest | 16-deploying-scalable-agents (README, prototipo → producción)
+
+**Fuente**: `16-deploying-scalable-agents/README.md`, recorrido y explicación didáctica completa en sesión de conversación (tabla prototipo/producción, tres patrones de despliegue, ciclo de vida, escalado, observabilidad, coste, controles de empresa, smoke tests, laboratorio y knowledge check). El notebook (`16-python-agent-framework.ipynb`) y el pipeline de smoke tests **no se ejecutaron** — ingesta solo de lectura sobre el README.
+
+Lección bisagra del curso: cierra el arco que va de "agente en un notebook" a "agente en producción". Introduce un concepto nuevo con página propia — [[patrones-de-despliegue]] (client-hosted / Hosted Agent / Agent Workflow) — y extiende tres piezas ya existentes en vez de duplicarlas:
+
+- **Evaluación como compuerta de release** — el loop offline/online de [[10-ai-agents-production]] se vuelve código explícito (`evaluation_gate()` bloquea el deploy bajo un umbral); nuevo rol para [[llm-as-judge]] (`source_count` 3→4).
+- **`RequestInfoEvent` aplicado a permiso, no a datos** — el `Human Approval Node` del patrón Agent Workflow es el mismo primitivo de pausa de [[workflows-como-grafo]] (`source_count` 4→5), ahora deteniendo el grafo para una aprobación humana de negocio (reembolso, borrado de cuenta).
+- **Foundry Agent Service como Hosted Agent** — nueva sección en [[azure-ai-foundry]] (`source_count` 7→8): el agente como recurso registrado, no como proceso propio.
+- **`WorkflowBuilder` y `agent_framework.observability` a escala de despliegue** — nueva sección en [[microsoft-agent-framework]] (`source_count` 8→9): atributos de span de negocio, `@tool(approval_mode=...)` como gate de aprobación.
+
+**Páginas creadas** (2): `sources/16-deploying-scalable-agents.md`, `concepts/patrones-de-despliegue.md`
+**Páginas actualizadas** (6): `entities/azure-ai-foundry.md`, `entities/microsoft-agent-framework.md`, `concepts/workflows-como-grafo.md`, `concepts/llm-as-judge.md`, `index.md` (fuente + concepto + 1 pendiente nuevo), `overview.md` (source_count 11→12, hilo conceptual)
+
+**Pendiente nuevo**: el notebook y el pipeline de smoke tests de la lección 16 no se han ejecutado contra Foundry real — todo lo ingerido es diseño documentado en el README, no comportamiento verificado.
+
 ## [2026-08-07] ingest | Fix: 15-browser-user.ipynb en Windows (Chrome, .env, event loop)
 
 **Fuente**: sesión de depuración real en esta conversación, ejecutando `15-browser-user.ipynb` en Windows tras el recorrido didáctico. Sin fuente escrita propia — se ingiere el resumen de la conversación (caso "ingesta sin fuente escrita").

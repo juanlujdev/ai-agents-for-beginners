@@ -1,12 +1,16 @@
 ---
 type: entity
-date_updated: 2026-08-01
-source_count: 7
+date_updated: 2026-08-07
+source_count: 8
 ---
 
 # Azure AI Foundry
 
 Plataforma de Azure (ai.azure.com) donde se despliegan los modelos que usa el curso. Antes "Azure AI Studio"; el servicio de agentes se llama **Foundry Agent Service**.
+
+## Foundry Agent Service como Hosted Agent
+
+En producción ([[16-deploying-scalable-agents]]), el agente se **registra como recurso** en Foundry en vez de vivir dentro del proceso de la app: Foundry aloja el bucle de razonamiento, persiste los threads, aplica RBAC y seguridad de contenido, y lo hace visible en el portal. La app cliente pasa a ser un cliente delgado que crea threads y lee respuestas. Es uno de los tres [[patrones-de-despliegue]], con **Model Router** nativo para enrutar por complejidad y un thread store que es lo que permite que el agente sea sin estado en el proceso y escale horizontalmente.
 
 ## Los dos flujos, que se confunden
 
@@ -37,4 +41,4 @@ Sin claves de API: `AzureCliCredential` / `DefaultAzureCredential` usan la sesi�
 
 Otros servicios de Azure que aparecen en el curso: **Azure AI Search** (índice para RAG y Structured RAG, imprescindible en `github-mcp`), **Bing Grounding** (búsqueda web, `BING_CONNECTION_ID`) y **Azure AI Vision** (OCR real, recomendado en la lección 10).
 
-Fuentes: [[00-course-setup]], [[02-explore-agentic-frameworks]], [[10-ai-agents-production]], [[14-microsoft-agent-framework]]
+Fuentes: [[00-course-setup]], [[02-explore-agentic-frameworks]], [[10-ai-agents-production]], [[14-microsoft-agent-framework]], [[16-deploying-scalable-agents]]

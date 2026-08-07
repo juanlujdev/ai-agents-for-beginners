@@ -25,6 +25,7 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[13-agent-memory]] | 13 | 7 tipos de memoria, knowledge agent, Cognee vs MAF |
 | [[14-microsoft-agent-framework]] | 14 | Sequential, concurrent, conditional, handoff, middleware, LangGraph hospedado |
 | [[15-browser-use]] | 15 | Computer use agents: Browser-Use + Playwright/CDP, Agente vs Actor, extracción con visión |
+| [[16-deploying-scalable-agents]] | 16 | Prototipo → producción: patrones de despliegue, evaluación como compuerta, routing/cache, observabilidad, smoke tests; notebook ejecutado celda a celda contra Foundry real |
 
 **Sin ingerir todavía**: lecciones 01, 04, 05, 06, 07 y 18 — no aparecen en el historial de conversaciones o solo de pasada.
 
@@ -52,6 +53,7 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[llm-as-judge]] | Un agente puntuando a otro: usos y límites |
 | [[autenticacion-azure-sin-claves]] | `az login` en vez de claves; caducidad y token providers |
 | [[computer-use-agents]] | Agente que actúa sobre una interfaz visual; Agente vs Actor; patrón híbrido |
+| [[patrones-de-despliegue]] | Client-hosted, Hosted Agent y Agent Workflow: dónde vive el bucle en producción |
 
 ## Síntesis
 
@@ -70,6 +72,7 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | [[fix-git-push-divergente]] | Rebase tras sincronizar con el upstream del fork |
 | [[fix-hotel-booking-sample-imports]] | `ChatMessage`/`ai_function`/`Role.USER` rotos en un script `.py` de la 14, no solo en notebooks |
 | [[fix-browser-use-windows-jupyter]] | Chrome no encontrado, `.env` mal nombrado, y `NotImplementedError` de asyncio en Jupyter/Windows |
+| [[fix-azure-search-placeholder-url]] | Placeholder `"https://..."` en `.env` pasa el `bool()`, `search_policies` intenta Azure real y rompe la compuerta de evaluación |
 
 ## Pendientes
 
@@ -89,3 +92,5 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | Project Opal cita las lecciones 04, 06, 07 y 18 como referencia (tools reutilizables, human-in-the-loop, planificación, agentes seguros); esas lecciones siguen sin página propia, así que la comparación en [[computer-use-agents]] queda con enlaces pendientes | hueco | 2026-08-07 |
 | `.env` del repo tiene ahora `AZURE_OPENAI_DEPLOYMENT` y `AZURE_OPENAI_CHAT_DEPLOYMENT_NAME` con el mismo valor duplicado, por las dos convenciones de nombre que conviven (Entra ID vs `browser_use.ChatAzureOpenAI`) — ver [[fix-browser-use-windows-jupyter]]; sin limpiar | limpieza | 2026-08-07 |
 | El fix de `NotImplementedError` en [[fix-browser-use-windows-jupyter]] es específico de `ipykernel` 7.3.0 en Windows; no comprobado si sigue haciendo falta en versiones más nuevas de `ipykernel` que puedan dejar de forzar `WindowsSelectorEventLoopPolicy` | verificación | 2026-08-07 |
+El pipeline de smoke tests de la lección 16 (`tests/lesson-16-smoke-tests.json`, `.github/workflows/smoke-test.yml`) sigue sin ejecutarse — el notebook (`16-python-agent-framework.ipynb`) ya se ejecutó y verificó, ver [[fix-azure-search-placeholder-url]] | verificación | 2026-08-07 |
+| `.env` tiene placeholders (`AZURE_SEARCH_SERVICE_ENDPOINT="https://..."`, `AZURE_SEARCH_API_KEY="..."`) para la lección 05 (sin ingerir) que un `bool()` no distingue de configuración real; puede volver a romper cualquier notebook que use `search_policies`/RAG hasta que la lección 05 se ingiera y rellene con valores reales o se documente el patrón como regla general | limpieza | 2026-08-07 |

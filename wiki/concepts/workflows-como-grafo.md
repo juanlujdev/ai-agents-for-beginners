@@ -1,7 +1,7 @@
 ---
 type: concept
-date_updated: 2026-08-02
-source_count: 4
+date_updated: 2026-08-07
+source_count: 5
 ---
 
 # Workflows como grafo
@@ -71,4 +71,8 @@ Secuencial · concurrente · group chat · **handoff** (un agente deriva a un es
 
 Human-in-the-loop encaja aquí: un `RequestInfoEvent` **pausa** el workflow esperando respuesta humana, que se envía con `send_responses_streaming(...)`.
 
-Fuentes: [[08-multi-agent]], [[14-microsoft-agent-framework]], [[10-ai-agents-production]]
+## El mismo primitivo, aplicado a permiso en vez de a datos
+
+En [[16-deploying-scalable-agents]], el patrón de despliegue **Agent Workflow** ([[patrones-de-despliegue]]) usa esta misma pausa para un `Human Approval Node`: el grafo no espera un dato que falta, espera que un humano apruebe o rechace una acción de negocio (reembolso, borrado de cuenta) antes de que el nodo siguiente se ejecute. Mismo mecanismo (`RequestInfoEvent`), distinto motivo para pausar.
+
+Fuentes: [[08-multi-agent]], [[14-microsoft-agent-framework]], [[10-ai-agents-production]], [[16-deploying-scalable-agents]]

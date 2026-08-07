@@ -1,20 +1,20 @@
 ---
 type: overview
 date_updated: 2026-08-07
-source_count: 11
+source_count: 12
 ---
 
 # Overview
 
 Wiki del curso *AI Agents for Beginners* (Microsoft), construida sobre las lecciones del repo y el historial de trabajo con ellas.
 
-**Estado**: 11 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework y computer use agents (navegador). Ver [[index]] para el catálogo y [[log]] para la cronología.
+**Estado**: 12 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework, computer use agents (navegador) y despliegue a escala. Ver [[index]] para el catálogo y [[log]] para la cronología.
 
 ## Tesis actual
 
 Tres cosas que se repiten en todas las lecciones:
 
-**1. La mayoría de los errores no están en el código de la lección, sino en el desajuste entre el código y lo que hay instalado.** El curso se escribió contra una versión anterior del SDK y contra `gpt-4o`, y ambos se movieron. Nueve símbolos rotos en un solo notebook ([[fix-notebook-04-sdk-desactualizado]]), métodos renombrados, clases que pasaron a ser Protocolos, enums que pasaron a `NewType`. El método que funciona es verificar la existencia y la firma real de cada símbolo contra el paquete instalado **antes** de editar, en vez de cazarlos de uno en uno.
+**1. La mayoría de los errores no están en el código de la lección, sino en el desajuste entre el código y lo que hay instalado (o configurado).** El curso se escribió contra una versión anterior del SDK y contra `gpt-4o`, y ambos se movieron. Nueve símbolos rotos en un solo notebook ([[fix-notebook-04-sdk-desactualizado]]), métodos renombrados, clases que pasaron a ser Protocolos, enums que pasaron a `NewType`. El método que funciona es verificar la existencia y la firma real de cada símbolo contra el paquete instalado **antes** de editar, en vez de cazarlos de uno en uno. El mismo patrón aparece en `.env`: un valor placeholder no vacío (`"https://..."`) pasa cualquier comprobación con `bool()` y activa silenciosamente el camino de código equivocado — [[fix-azure-search-placeholder-url]].
 
 **2. La elección del modelo rompe cosas que parecen bugs de código.** Es el hallazgo transversal ([[claude-vs-openai-en-foundry]]): un deployment `claude-*` funciona para texto libre y falla en [[structured-outputs]] y en tool-calling con sesión; un modelo de razonamiento como `gpt-5-mini` rompe el traspaso de historial entre agentes ([[fix-reasoning-item-workflow]]). Ante un fallo raro, la familia del modelo es la primera sospechosa, no la última.
 
@@ -30,5 +30,6 @@ El curso avanza de "un agente con tools" a "varios agentes coordinados en produc
 - [[metacognicion]] y [[llm-as-judge]] son las capas de auto-observación.
 - [[mcp]], [[a2a]] y [[nlweb]] son la interoperabilidad hacia fuera.
 - [[computer-use-agents]] es la variante donde el agente actúa sobre una interfaz visual (navegador) en vez de una API — mismo principio de [[structured-outputs]], aplicado a lo que el modelo "ve" en pantalla.
+- [[patrones-de-despliegue]] cierra el arco del curso: lleva ese mismo agente de notebook a producción, convirtiendo la evaluación offline/online de [[10-ai-agents-production]] en una **compuerta de release** ([[llm-as-judge]]) y el `RequestInfoEvent` de [[workflows-como-grafo]] en un nodo de aprobación humana para acciones de negocio reales.
 
 Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]], salvo la lección 15 ([[browser-use]]), que añade Playwright/CDP como capa de control del navegador.
