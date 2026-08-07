@@ -1,6 +1,6 @@
 ---
 type: index
-date_updated: 2026-08-07
+date_updated: 2026-08-08
 ---
 
 # Índice de la wiki
@@ -27,8 +27,9 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[15-browser-use]] | 15 | Computer use agents: Browser-Use + Playwright/CDP, Agente vs Actor, extracción con visión |
 | [[16-deploying-scalable-agents]] | 16 | Prototipo → producción: patrones de despliegue, evaluación como compuerta, routing/cache, observabilidad, smoke tests; notebook ejecutado celda a celda contra Foundry real |
 | [[17-creating-local-ai-agents]] | 17 | Agentes 100% locales: SLMs, Foundry Local (endpoint OpenAI-compatible), Qwen function calling, RAG local con Chroma, MCP local, routing híbrido local/nube; README + notebook leído celda a celda (bucle `run_agent`, sandbox `_safe_path`, `TOOLS_SCHEMA`), sin ejecutar contra Foundry real |
+| [[18-securing-ai-agents]] | 18 | Recibos criptográficos (Ed25519 + JCS + encadenamiento por hash) para auditar acciones de agente; qué prueban (atribución/integridad/orden) y qué no (corrección/política/identidad/veracidad); README + notebook leído celda a celda, con outputs de una ejecución real ya presentes en el archivo (todo coincide con lo esperado) |
 
-**Sin ingerir todavía**: lecciones 01, 04, 05, 06, 07 y 18 — no aparecen en el historial de conversaciones o solo de pasada.
+**Sin ingerir todavía**: lecciones 01, 04, 05, 06 y 07 — no aparecen en el historial de conversaciones o solo de pasada.
 
 ## Entidades
 
@@ -59,6 +60,7 @@ Una página por lección. Reconstruidas a partir del historial de conversaciones
 | [[computer-use-agents]] | Agente que actúa sobre una interfaz visual; Agente vs Actor; patrón híbrido |
 | [[patrones-de-despliegue]] | Client-hosted, Hosted Agent y Agent Workflow: dónde vive el bucle en producción |
 | [[slm]] | Small Language Models: fuertes en tareas acotadas y tool calling, débiles en conocimiento amplio — el SLM orquesta, las tools cargan con el peso |
+| [[recibos-criptograficos]] | JSON firmado (Ed25519) + JCS + encadenamiento por hash: prueba atribución/integridad/orden de una acción de agente; no prueba corrección ni cumplimiento de política |
 
 ## Síntesis
 
@@ -101,3 +103,5 @@ El pipeline de smoke tests de la lección 16 (`tests/lesson-16-smoke-tests.json`
 | `.env` tiene placeholders (`AZURE_SEARCH_SERVICE_ENDPOINT="https://..."`, `AZURE_SEARCH_API_KEY="..."`) para la lección 05 (sin ingerir) que un `bool()` no distingue de configuración real; puede volver a romper cualquier notebook que use `search_policies`/RAG hasta que la lección 05 se ingiera y rellene con valores reales o se documente el patrón como regla general | limpieza | 2026-08-07 |
 | El notebook de la lección 17 (`code_samples/17-local-agent-foundry-local.ipynb`) se leyó y explicó celda a celda pero sigue **sin ejecutarse** contra un Foundry Local real — Foundry Local no está instalado/verificado en esta máquina; el código quedó verificado por lectura del fuente, no por comportamiento observado | verificación | 2026-08-07 |
 | RAG local de la lección 17 cita explícitamente el patrón de Agentic RAG de la lección 5, que sigue sin página propia — el enlace desde [[17-creating-local-ai-agents]]/[[chroma]] queda pendiente hasta ingerirla | hueco | 2026-08-07 |
+| El notebook de la lección 18 (`code_samples/18-signed-receipts.ipynb`) tiene outputs de una ejecución real ya presentes en el archivo (comparado contra el commit en git), pero no se sabe con certeza quién los generó ni cuándo — no se ejecutó dentro de esta sesión de conversación, solo se leyó y explicó celda a celda | verificación | 2026-08-08 |
+| El README de la lección 18 recomienda como referencia de producción el paquete `nobulex` (PyPI, repo de terceros sin vínculo verificado con Microsoft); no auditado, ver nota en [[recibos-criptograficos]] | verificación | 2026-08-08 |

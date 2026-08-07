@@ -1,12 +1,42 @@
 ---
 type: log
-date_updated: 2026-08-07
+date_updated: 2026-08-08
 ---
 
 # Log
 
 Append-only. Formato de cabecera fijo para poder filtrar:
 `grep "^## \[" wiki/log.md | tail -5`
+
+## [2026-08-08] ingest | 18-signed-receipts.ipynb (recorrido celda a celda; ejecución real ya presente en el archivo)
+
+**Fuente**: `18-securing-ai-agents/code_samples/18-signed-receipts.ipynb`, recorrido celda a celda en sesión didáctica (explicación en castellano de cada función y cada prompt, dirigida a un lector sin experiencia previa en programación). Al leer el archivo se confirmó, comparando contra el commit en git (`git diff --stat`), que **ya tiene outputs de una ejecución real** (`execution_count` con números concretos, timestamps y claves reales) — no se generaron en esta sesión de conversación ni se sabe con certeza quién los produjo, pero son resultados genuinos que coinciden exactamente con lo que cada celda predice: recibo firmado válido, recibo tamperado inválido, cadena de 3 recibos válida, cadena tamperada con fallo distinguible por `signature` vs. `chain link`, herramienta envuelta con 3 recibos válidos.
+
+No introduce entidades ni conceptos nuevos — profundiza [[recibos-criptograficos]] (creado en la sesión anterior, solo desde el README) con el código real:
+
+- Las funciones concretas: `b64url_nopad`/`b64url_decode`, `sha256_canonical`, `sign_receipt`/`verify_receipt` (con el detalle de que `signature`/`public_key` quedan fuera de los bytes firmados), `receipt_hash` (hash del recibo completo, firma incluida — distinto de `tool_args_hash`), `verify_chain` (tres comprobaciones independientes: firma, enlace, secuencia).
+- El **fallo en cascada** al tamperar un recibo del medio de una cadena: el recibo tocado falla por firma, el *siguiente* falla por enlace de cadena aunque su propia firma siga siendo válida — ocultar la manipulación exigiría volver a firmar todos los recibos posteriores, lo cual requiere la clave privada en cada paso.
+- El patrón **`ReceiptedTool`**: clase envoltorio (`__call__`) que automatiza la generación y encadenado del recibo como efecto colateral de llamar a la herramienta, con boceto de integración con `agent_framework.foundry.FoundryChatClient` (Microsoft Agent Framework) — el framework y el modelo no saben que existen los recibos.
+
+**Páginas creadas**: 0
+**Páginas actualizadas** (3): `sources/18-securing-ai-agents.md` (nueva sección "Notebook: leído celda a celda, ya ejecutado" + frontmatter `fuente` con las dos rutas), `concepts/recibos-criptograficos.md` (dos secciones nuevas: implementación de referencia + `ReceiptedTool`), `index.md` (fila de fuente 18 actualizada, pendiente de "sin leer" reescrito a "leído pero no ejecutado en esta sesión, con ejecución previa ya presente en el archivo")
+
+**Pendiente sin resolver**: el `nobulex` sin auditar del README sigue igual; y sigue sin confirmarse quién/cuándo ejecutó el notebook por primera vez (los outputs ya estaban en el archivo al abrirlo en esta sesión).
+
+## [2026-08-08] ingest | 18-securing-ai-agents (README, recibos criptográficos)
+
+**Fuente**: `18-securing-ai-agents/README.md`, recorrido y explicación didáctica completa en sesión de conversación (problema del audit trail, qué es un recibo, firmar en Python, verificar y detectar manipulación, encadenar recibos, qué prueban y qué no, checklist de producción, knowledge check). El notebook (`code_samples/18-signed-receipts.ipynb`) **no se leyó ni se ejecutó** — mismo patrón que la primera sesión de [[16-deploying-scalable-agents]] y [[17-creating-local-ai-agents]] (README primero).
+
+Última lección del curso: cierra el arco con una capa que ninguna lección anterior cubría — auditoría/gobernanza post-hoc en vez de ejecución o coordinación del agente. Introduce un concepto nuevo con página propia:
+
+- **[[recibos-criptograficos]]** (concepto nuevo) — JSON firmado con Ed25519, canonicalizado con JCS (RFC 8785) antes de firmar, y encadenado por hash (`previous_receipt_hash`). Prueba atribución + integridad + orden; explícitamente **no** prueba corrección, cumplimiento de política, identidad humana ni veracidad de las entradas. Contrastado en la página con [[llm-as-judge]] (evalúa calidad, no proveniencia) y con el `approval_mode` de [[16-deploying-scalable-agents]] (decide si la acción ocurre; el recibo prueba que ocurrió tal cual).
+
+**Aviso de cautela añadido**: el README recomienda como referencia de producción un paquete de terceros, `nobulex` (PyPI), sin vínculo verificado con Microsoft ni con el resto de fuentes oficiales citadas en el curso. Se documenta como pendiente sin auditar en vez de darlo por confiable solo por aparecer en el texto de la lección.
+
+**Páginas creadas** (2): `sources/18-securing-ai-agents.md`, `concepts/recibos-criptograficos.md`
+**Páginas actualizadas** (2): `index.md` (fuente + concepto + 2 pendientes nuevos + "sin ingerir" reducido a 01/04/05/06/07), `overview.md` (`source_count` 13→14, hilo conceptual)
+
+**Pendientes nuevos**: notebook de la 18 sin leer/ejecutar; referencia a `nobulex` sin auditar.
 
 ## [2026-08-07] ingest | 17-local-agent-foundry-local.ipynb (recorrido celda a celda, sin ejecutar)
 

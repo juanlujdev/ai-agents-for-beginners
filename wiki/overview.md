@@ -1,14 +1,14 @@
 ---
 type: overview
-date_updated: 2026-08-07
-source_count: 13
+date_updated: 2026-08-08
+source_count: 14
 ---
 
 # Overview
 
 Wiki del curso *AI Agents for Beginners* (Microsoft), construida sobre las lecciones del repo y el historial de trabajo con ellas.
 
-**Estado**: 13 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework, computer use agents (navegador), despliegue a escala y agentes locales. Ver [[index]] para el catálogo y [[log]] para la cronología.
+**Estado**: 14 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework, computer use agents (navegador), despliegue a escala, agentes locales y auditoría/gobernanza de agentes. Ver [[index]] para el catálogo y [[log]] para la cronología.
 
 ## Tesis actual
 
@@ -32,5 +32,6 @@ El curso avanza de "un agente con tools" a "varios agentes coordinados en produc
 - [[computer-use-agents]] es la variante donde el agente actúa sobre una interfaz visual (navegador) en vez de una API — mismo principio de [[structured-outputs]], aplicado a lo que el modelo "ve" en pantalla.
 - [[patrones-de-despliegue]] cierra el arco de producción: lleva ese mismo agente de notebook a producción, convirtiendo la evaluación offline/online de [[10-ai-agents-production]] en una **compuerta de release** ([[llm-as-judge]]) y el `RequestInfoEvent` de [[workflows-como-grafo]] en un nodo de aprobación humana para acciones de negocio reales.
 - [[17-creating-local-ai-agents|El agente local]] es la contrapartida de todo lo anterior: en vez de escalar hacia la nube, el mismo bucle tool-calling corre entero en la máquina con un [[slm]] servido por [[foundry-local]]. La pieza que lo hace posible es [[qwen]] (function calling fiable) y el mismo patrón de model routing de la 16 se extiende con un tercer eje — local vs. nube por sensibilidad y disponibilidad, no solo por complejidad.
+- [[recibos-criptograficos|Recibos criptográficos]] cierran el curso con una capa distinta a todas las anteriores: no ejecutan ni coordinan al agente, lo hacen **auditable después del hecho**. Frente a [[llm-as-judge]] (evalúa si la respuesta fue buena) y a la aprobación humana de [[16-deploying-scalable-agents]] (decide si la acción ocurre), el recibo solo prueba que una acción concreta ocurrió, sin alteración, en cierto orden — deliberadamente ciego a si estuvo bien hecha o autorizada por una persona real.
 
 Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]], salvo la lección 15 ([[browser-use]]), que añade Playwright/CDP como capa de control del navegador, y la lección 17, que sustituye la nube por [[foundry-local]].
