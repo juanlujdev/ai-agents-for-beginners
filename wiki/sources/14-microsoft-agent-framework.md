@@ -1,9 +1,9 @@
 ---
 type: source-summary
-date_updated: 2026-08-02
+date_updated: 2026-08-07
 leccion: 14-microsoft-agent-framework
 sesiones: [5f237daa, 771cdf26, e8c216f7, 1a4c626f, dd752e87, ea1ac533, 62cab66d, 7d9a8e0d, 78c7fe19]
-fechas_origen: 2026-07-28 .. 2026-08-02
+fechas_origen: 2026-07-28 .. 2026-08-07
 ---
 
 # 14 — Microsoft Agent Framework
@@ -126,6 +126,8 @@ Las funciones de condición **no llaman a nadie**: devuelven un booleano. El **m
 Este notebook destapó el problema de los reasoning items y su solución → [[fix-reasoning-item-workflow]].
 
 Discrepancia menor: el markdown del notebook menciona `@ai_function`, pero el código usa `@tool`. Es desfase de redacción, mismo comportamiento.
+
+**Corrección (2026-08-07):** esa conclusión vale solo para el notebook. El script standalone equivalente, `code-samples/hotel_booking_workflow_sample.py` (mismo patrón de 3 agentes + 1 executor, pero como `.py` suelto en vez de notebook), sí **importaba** `ai_function` en el código — no solo lo mencionaba en texto — y falla con `ImportError` real contra el SDK instalado. Junto con `ChatMessage` y `Role.USER` (rotos por el mismo motivo que en [[fix-notebook-04-sdk-desactualizado]]), son tres símbolos desactualizados en ese archivo, ya corregidos y verificados → [[fix-hotel-booking-sample-imports]].
 
 ## `14-handoff.ipynb` — derivación tipo call center
 

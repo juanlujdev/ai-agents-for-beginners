@@ -1,6 +1,6 @@
 ---
 type: entity
-date_updated: 2026-08-01
+date_updated: 2026-08-07
 source_count: 8
 ---
 
@@ -35,8 +35,9 @@ Todas verificadas contra el paquete real, no contra documentación:
 - **`SUPPORTS_RICH_FUNCTION_OUTPUT = False`** en el cliente de Foundry — descarta imágenes devueltas por tools → [[fix-imagenes-en-foundry]].
 - **`get_outputs()` devuelve por orden de llegada**, no por el orden declarado → [[fix-workflow-concurrente]].
 - La telemetría hace `json.dumps` de las definiciones de tools y **no sabe serializar** `AutoCodeInterpreterToolParam` → [[fix-notebook-04-sdk-desactualizado]].
+- **`ai_function` no existe**, es `tool`. Verificado también fuera de los notebooks: el script `code-samples/hotel_booking_workflow_sample.py` de la lección 14 lo importaba y falla con `ImportError` → [[fix-hotel-booking-sample-imports]].
 
-Varios notebooks del curso están escritos contra una API anterior (`Hosted*Tool`, `AzureAIAgentClient`, `ChatMessage`) y no ejecutan sin arreglos.
+Varios notebooks **y scripts standalone** del curso están escritos contra una API anterior (`Hosted*Tool`, `AzureAIAgentClient`, `ChatMessage`, `ai_function`) y no ejecutan sin arreglos. No es solo un problema de notebooks: `hotel_booking_workflow_sample.py` es un `.py` normal y tenía el mismo trío de síntomas (`ChatMessage`, `ai_function`, `Role.USER`) → [[fix-hotel-booking-sample-imports]].
 
 ## Relación con otras piezas
 

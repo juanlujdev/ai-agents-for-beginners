@@ -8,6 +8,10 @@ date_updated: 2026-08-01
 Append-only. Formato de cabecera fijo para poder filtrar:
 `grep "^## \[" wiki/log.md | tail -5`
 
+## [2026-08-07] ingest | Fix de imports desactualizados en hotel_booking_workflow_sample.py
+
+`ChatMessage`, `ai_function` y `Role.USER` no existen en el `agent_framework` instalado (verificado con imports reales, no con documentación): son `Message`, `tool` y `role="user"` con `contents=[...]`. Corregido en el archivo. Cuarta aparición del mismo patrón de bug ya visto en [[fix-notebook-04-sdk-desactualizado]] — nueva página [[fix-hotel-booking-sample-imports]]. Corrige además una conclusión previa en [[14-microsoft-agent-framework]] que había calificado la mención a `ai_function` como "desfase de redacción" sin bug real: en este script sí lo es.
+
 ## [2026-08-01] setup | Esqueleto de la wiki creado
 
 Estructura inicial: `index.md`, `overview.md`, `sources/`, `entities/`, `concepts/`, `synthesis/`, `raw/`.

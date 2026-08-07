@@ -32,12 +32,11 @@ from agent_framework import (
     AgentExecutor,
     AgentExecutorRequest,
     AgentExecutorResponse,
-    ChatMessage,
-    Role,
+    Message,
     WorkflowBuilder,
     WorkflowContext,
-    ai_function,
     executor,
+    tool,
 )
 from agent_framework.openai import OpenAIChatClient
 from azure.identity import AzureCliCredential
@@ -77,7 +76,7 @@ class BookingConfirmation(BaseModel):
 # ============================================================================
 
 
-@ai_function(description="Check hotel room availability for a destination city")
+@tool(description="Check hotel room availability for a destination city")
 def hotel_booking(destination: Annotated[str, "The destination city to check for hotel rooms"]) -> str:
     """
     Simulates checking hotel room availability.
@@ -295,7 +294,7 @@ async def main() -> None:
     print("=" * 80)
 
     request1 = AgentExecutorRequest(
-        messages=[ChatMessage(Role.USER, text="I want to book a hotel in Paris")], should_respond=True
+        messages=[Message(role="user", contents=["I want to book a hotel in Paris"])], should_respond=True
     )
 
     events1 = await workflow.run(request1)
@@ -317,7 +316,7 @@ async def main() -> None:
     print("=" * 80)
 
     request2 = AgentExecutorRequest(
-        messages=[ChatMessage(Role.USER, text="I want to book a hotel in Stockholm")], should_respond=True
+        messages=[Message(role="user", contents=["I want to book a hotel in Stockholm"])], should_respond=True
     )
 
     events2 = await workflow.run(request2)

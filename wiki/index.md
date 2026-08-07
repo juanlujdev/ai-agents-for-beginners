@@ -1,6 +1,6 @@
 ---
 type: index
-date_updated: 2026-08-02
+date_updated: 2026-08-07
 ---
 
 # Índice de la wiki
@@ -65,6 +65,7 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | [[fix-pip-notebook-colgado]] | `!pip` vs `%pip`, y cuándo está lento pero vivo |
 | [[fix-az-login-cache-msal]] | `az account clear` cuando el login entra en bucle |
 | [[fix-git-push-divergente]] | Rebase tras sincronizar con el upstream del fork |
+| [[fix-hotel-booking-sample-imports]] | `ChatMessage`/`ai_function`/`Role.USER` rotos en un script `.py` de la 14, no solo en notebooks |
 
 ## Pendientes
 
@@ -78,3 +79,4 @@ Hallazgos que cruzan lecciones y correcciones de código con su motivo.
 | Sin página propia: Semantic Kernel, AutoGen, Mem0, Chainlit, Azure AI Search | concepto sin página | 2026-08-01 |
 | `output_executors` deprecado en favor de `output_from`: sin comprobar si la semántica es idéntica ni si afecta a los otros notebooks de la 14 | API | 2026-08-02 |
 | Los notebooks que aún piden JSON solo por prompt (sin `response_format`) no están inventariados; ya han fallado tres | seguimiento | 2026-08-02 |
+| Los demás scripts `.py` de `code-samples/` (fuera de notebooks) no se han auditado contra el SDK instalado; `hotel_booking_workflow_sample.py` tenía 3 imports rotos sin que nadie lo hubiera ejecutado | seguimiento | 2026-08-07 |
