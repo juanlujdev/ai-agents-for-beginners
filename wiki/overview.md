@@ -1,14 +1,14 @@
 ---
 type: overview
 date_updated: 2026-08-07
-source_count: 12
+source_count: 13
 ---
 
 # Overview
 
 Wiki del curso *AI Agents for Beginners* (Microsoft), construida sobre las lecciones del repo y el historial de trabajo con ellas.
 
-**Estado**: 12 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework, computer use agents (navegador) y despliegue a escala. Ver [[index]] para el catálogo y [[log]] para la cronología.
+**Estado**: 13 lecciones ingeridas de 18. Cubre setup, frameworks, patrones de diseño, multi-agente, metacognición, producción, protocolos, context engineering, memoria, Microsoft Agent Framework, computer use agents (navegador), despliegue a escala y agentes locales. Ver [[index]] para el catálogo y [[log]] para la cronología.
 
 ## Tesis actual
 
@@ -30,6 +30,7 @@ El curso avanza de "un agente con tools" a "varios agentes coordinados en produc
 - [[metacognicion]] y [[llm-as-judge]] son las capas de auto-observación.
 - [[mcp]], [[a2a]] y [[nlweb]] son la interoperabilidad hacia fuera.
 - [[computer-use-agents]] es la variante donde el agente actúa sobre una interfaz visual (navegador) en vez de una API — mismo principio de [[structured-outputs]], aplicado a lo que el modelo "ve" en pantalla.
-- [[patrones-de-despliegue]] cierra el arco del curso: lleva ese mismo agente de notebook a producción, convirtiendo la evaluación offline/online de [[10-ai-agents-production]] en una **compuerta de release** ([[llm-as-judge]]) y el `RequestInfoEvent` de [[workflows-como-grafo]] en un nodo de aprobación humana para acciones de negocio reales.
+- [[patrones-de-despliegue]] cierra el arco de producción: lleva ese mismo agente de notebook a producción, convirtiendo la evaluación offline/online de [[10-ai-agents-production]] en una **compuerta de release** ([[llm-as-judge]]) y el `RequestInfoEvent` de [[workflows-como-grafo]] en un nodo de aprobación humana para acciones de negocio reales.
+- [[17-creating-local-ai-agents|El agente local]] es la contrapartida de todo lo anterior: en vez de escalar hacia la nube, el mismo bucle tool-calling corre entero en la máquina con un [[slm]] servido por [[foundry-local]]. La pieza que lo hace posible es [[qwen]] (function calling fiable) y el mismo patrón de model routing de la 16 se extiende con un tercer eje — local vs. nube por sensibilidad y disponibilidad, no solo por complejidad.
 
-Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]], salvo la lección 15 ([[browser-use]]), que añade Playwright/CDP como capa de control del navegador.
+Todo se implementa con [[microsoft-agent-framework]] sobre [[azure-ai-foundry]], salvo la lección 15 ([[browser-use]]), que añade Playwright/CDP como capa de control del navegador, y la lección 17, que sustituye la nube por [[foundry-local]].

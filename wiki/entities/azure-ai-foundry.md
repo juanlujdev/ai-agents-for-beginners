@@ -41,4 +41,8 @@ Sin claves de API: `AzureCliCredential` / `DefaultAzureCredential` usan la sesi�
 
 Otros servicios de Azure que aparecen en el curso: **Azure AI Search** (índice para RAG y Structured RAG, imprescindible en `github-mcp`), **Bing Grounding** (búsqueda web, `BING_CONNECTION_ID`) y **Azure AI Vision** (OCR real, recomendado en la lección 10).
 
-Fuentes: [[00-course-setup]], [[02-explore-agentic-frameworks]], [[10-ai-agents-production]], [[14-microsoft-agent-framework]], [[16-deploying-scalable-agents]]
+## No confundir con Foundry Local
+
+[[foundry-local]] comparte el nombre "Foundry" pero es un producto distinto: un runtime que sirve modelos **sin nube** en la propia máquina. Ningún recurso de Azure AI Foundry (proyecto, deployment, RBAC) aplica ahí — es el mismo tipo de trampa de nombres que "los dos flujos" de arriba, ahora entre dos productos en vez de entre dos rutas de un mismo producto.
+
+Fuentes: [[00-course-setup]], [[02-explore-agentic-frameworks]], [[10-ai-agents-production]], [[14-microsoft-agent-framework]], [[16-deploying-scalable-agents]], [[17-creating-local-ai-agents]]

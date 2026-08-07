@@ -80,6 +80,8 @@ async def handle_support_request(query: str, customer_id: str) -> str:
 
 Esta misma disciplina de coste (SLM para tareas simples, router barato, cache, presupuesto) ya aparecía en [[10-ai-agents-production]] como recomendación general; aquí se convierte en código concreto con dos modelos nombrados (`gpt-5-nano` / `gpt-5-mini`) y una regla explícita de `is_simple()`.
 
+[[17-creating-local-ai-agents]] extiende este mismo routing con un tercer eje: en vez de enrutar solo entre dos modelos de nube, una de las opciones puede ser la propia máquina (un [[slm]] servido por [[foundry-local]]), enrutando por sensibilidad/offline además de por complejidad.
+
 ## Observabilidad
 
 Reafirma OpenTelemetry de [[10-ai-agents-production]] (`agent_framework.observability`, `get_tracer()`), con el matiz de producción: los **atributos del span** (`customer.tier`, `routed.model`) son lo que convierte una traza en pregunta de negocio respondible — "¿los clientes enterprise se están enrutando de más al modelo pequeño?" — no solo en un log de auditoría.

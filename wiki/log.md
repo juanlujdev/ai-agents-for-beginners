@@ -8,6 +8,39 @@ date_updated: 2026-08-07
 Append-only. Formato de cabecera fijo para poder filtrar:
 `grep "^## \[" wiki/log.md | tail -5`
 
+## [2026-08-07] ingest | 17-local-agent-foundry-local.ipynb (recorrido celda a celda, sin ejecutar)
+
+**Fuente**: `17-creating-local-ai-agents/code_samples/17-local-agent-foundry-local.ipynb`, recorrido celda a celda en sesión didáctica (20 celdas, explicación en castellano de cada función y cada prompt, dirigida a un lector sin experiencia previa en programación). El notebook **no se ejecutó** contra un Foundry Local real (no instalado/verificado en esta máquina) — a diferencia de la ingesta anterior (solo README), aquí el código se leyó directamente del fuente, no se describió de segunda mano.
+
+No introduce entidades ni conceptos nuevos — profundiza los cinco ya creados en la sesión anterior con el código real:
+
+- **[[tool-calling]]**: nueva sección "La mecánica del bucle, sin envolver en ningún framework" — el bucle `run_agent` implementado a mano con el SDK de OpenAI puro, sin [[microsoft-agent-framework]] de por medio. Deja explícitas tres piezas que los frameworks suelen esconder: el historial se reenvía completo en cada vuelta (el modelo no tiene memoria propia), `tool_call_id` enlaza cada resultado con su petición, y hace falta un tope de iteraciones. Más el hallazgo de que la instrucción "prefer calling a tool over guessing" en el system prompt es la salvaguarda explícita contra la alucinación, no un detalle cosmético.
+- **[[chroma]]**: nueva sección de uso mínimo (`Client()`, `get_or_create_collection`, `upsert`, `query_texts`) y el detalle de que el embedding es automático con un modelo local por defecto — nadie elige ni configura un modelo de embeddings aparte.
+- **[[mcp]]**: nueva sección "No solo por red: transporte `stdio` local", con el código real de conexión (`StdioServerParameters`, `stdio_client`, `ClientSession`) — MCP como transporte que no exige red, no solo como servicio remoto (`source_count` 2→3).
+- **[[17-creating-local-ai-agents]]**: tres secciones nuevas con código verbatim del notebook — el sandbox completo (`_safe_path` + la tool `analyze_code`, no descrita en el README), el bucle `run_agent` con sus tres detalles no evidentes, y el código real de la conexión MCP.
+
+**Páginas creadas**: 0
+**Páginas actualizadas** (5): `sources/17-creating-local-ai-agents.md`, `concepts/tool-calling.md`, `entities/chroma.md`, `entities/mcp.md`, `index.md` (fuente + entidad MCP + pendiente refinado, de "no ejecutado, diseño documentado" a "leído y explicado, sin ejecutar")
+
+**Pendiente sin cambios**: sigue faltando una ejecución real contra Foundry Local instalado — todo lo de esta sesión es lectura y explicación del código, no comportamiento observado.
+
+## [2026-08-07] ingest | 17-creating-local-ai-agents (README, agentes 100% locales)
+
+**Fuente**: `17-creating-local-ai-agents/README.md`, recorrido y explicación didáctica completa en sesión de conversación (SLMs, Foundry Local, Qwen function calling, RAG local con Chroma, MCP local, patrones híbridos y knowledge check). El notebook (`code_samples/17-local-agent-foundry-local.ipynb`) **no se ejecutó** — ingesta solo de lectura sobre el README, mismo patrón que la primera sesión de [[16-deploying-scalable-agents]].
+
+Contrapartida de la lección 16: en vez de escalar el agente hacia la nube, lo trae de vuelta a una sola máquina. Introduce cuatro páginas nuevas y extiende tres ya existentes en vez de duplicarlas:
+
+- **[[slm]]** (concepto nuevo) — Small Language Models: fuertes en tareas acotadas y tool calling, débiles en conocimiento amplio y razonamiento largo; la regla de diseño que se deriva es que el SLM orquesta y las tools cargan con el peso.
+- **[[foundry-local]]** (entidad nueva) — runtime que sirve modelos sin nube tras un endpoint compatible con OpenAI; se cruza explícitamente con [[azure-ai-foundry]] para dejar registrada la confusión de nombres entre ambos productos (`source_count` 8→9, nueva sección "No confundir con Foundry Local").
+- **[[qwen]]** (entidad nueva) — SLMs entrenados para function calling fiable; nueva sección en [[tool-calling]] sobre la fiabilidad del *modelo*, no solo del framework (`source_count` 6→7).
+- **[[chroma]]** (entidad nueva) — vector DB embebida para RAG local; mismo patrón de Agentic RAG de la lección 5 (sin ingerir), pieza pendiente de enlazar cuando se ingiera esa lección.
+- **Model routing** de [[16-deploying-scalable-agents]] extendido con un tercer eje: local vs. nube por sensibilidad/disponibilidad, no solo por complejidad entre dos modelos de nube.
+
+**Páginas creadas** (5): `sources/17-creating-local-ai-agents.md`, `entities/foundry-local.md`, `entities/qwen.md`, `entities/chroma.md`, `concepts/slm.md`
+**Páginas actualizadas** (5): `concepts/tool-calling.md`, `entities/azure-ai-foundry.md`, `sources/16-deploying-scalable-agents.md`, `index.md` (fuente + 3 entidades + 1 concepto + 2 pendientes nuevos), `overview.md` (`source_count` 12→13, hilo conceptual)
+
+**Pendientes nuevos**: notebook de la 17 sin ejecutar (Foundry Local no instalado/verificado en esta máquina); enlace a la lección 5 (RAG local) queda roto hasta que se ingiera.
+
 ## [2026-08-07] ingest | 16-python-agent-framework.ipynb (recorrido celda a celda + fix de RAG)
 
 **Fuente**: `16-deploying-scalable-agents/code_samples/16-python-agent-framework.ipynb`, recorrido celda a celda en sesión didáctica (20 celdas, explicación en castellano de cada bloque de código y cada prompt) y ejecución real contra Foundry. Sin fuente escrita propia previa a esta sesión — el notebook ya estaba citado desde el README pero no se había abierto ni ejecutado (pendiente registrado el mismo día en la ingesta anterior).
